@@ -21,6 +21,9 @@ DEFAULT_COMMENT_PATTERN = re.compile(r"(\(\*.*?\*\))|(\{.*?})", re.S)
 PRAGMA_REGEX = re.compile(r"\s*\(\*\s*@(\w+)\s*:=\s*'(.*?)'\s*\*\)\s*")
 EMPTY_REGEX = re.compile(r"^\s*$")
 
+# Pattern to ignore
+DBG_PREFIX = "(*DBG:"
+
 
 def get_comment_pattern(
     files_iterator: fileinput.FileInput, enable_epas_pragmas: bool
@@ -40,6 +43,11 @@ def get_comment_pattern(
     r = re.compile  # Alias compile locally
 
     for line in files_iterator:
+        # 1. Skip Debug lines
+        if line.lstrip().startswith(DBG_PREFIX):
+            continue
+
+        # 2. Skip Empty lines
         if EMPTY_REGEX.match(line):
             continue
 
@@ -62,7 +70,7 @@ def get_comment_pattern(
                     ),
                 ]
         else:
-            # First non-empty, non-pragma line encountered, stop checking
+            # First non-empty, non-pragma, non-debug line encountered, stop checking
             break
 
     return DEFAULT_COMMENT_PATTERN  # If loop finishes without finding pragma
@@ -135,9 +143,11 @@ def run_cli(args_list: Optional[List[str]] = None) -> int:
         comment_pattern = get_comment_pattern(files_iterator, args.epas_pragmas)
         files_iterator.close()
 
-        # B. Re-open files and concatenate content
+        # B. Re-open files and concatenate content, filtering out DBG lines
         files_iterator = fileinput.input(args.files)
-        source_content = "".join(files_iterator)
+        source_content = "".join(
+            line for line in files_iterator if not line.lstrip().startswith(DBG_PREFIX)
+        )
 
         # C. Select Core Compilation Function
         if args.parse_only:
