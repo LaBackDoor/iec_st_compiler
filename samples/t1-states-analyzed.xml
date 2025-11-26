@@ -1,0 +1,182 @@
+<iec-source>
+  <analysis-summary>
+    <pdg-statistics>
+      <total-states>2</total-states>
+      <total-nodes>6</total-nodes>
+      <total-edges>2</total-edges>
+      <total-variables>24</total-variables>
+    </pdg-statistics>
+    <invariant-statistics>
+      <total-states>2</total-states>
+      <total-invariants>4</total-invariants>
+      <single-variable-invariants>2</single-variable-invariants>
+      <multi-variable-invariants>0</multi-variable-invariants>
+    </invariant-statistics>
+  </analysis-summary>
+  <program>
+    <iec-source><program-declaration><program-type-name>program0</program-type-name><input-declarations><var-init-decl><variable-name>L_T1</variable-name><simple-spec-init><real-type-name><type-real/></real-type-name></simple-spec-init></var-init-decl><var-init-decl><variable-name>iPU1_State</variable-name><simple-spec-init><integer-type-name><type-int/></integer-type-name><expression><integer-literal>10</integer-literal></expression></simple-spec-init></var-init-decl></input-declarations><output-declarations><var-init-decl><variable-name>S_PU1</variable-name><simple-spec-init><bit-string-type-name><type-bool/></bit-string-type-name></simple-spec-init></var-init-decl><var-init-decl><variable-name>S_PU2</variable-name><simple-spec-init><bit-string-type-name><type-bool/></bit-string-type-name></simple-spec-init></var-init-decl></output-declarations><var-declarations><var-init-decl><variable-name>PU1_LowLevel</variable-name><simple-spec-init><real-type-name><type-real/></real-type-name><expression><real-literal>4.0</real-literal></expression></simple-spec-init></var-init-decl><var-init-decl><variable-name>PU1_HighLevel</variable-name><simple-spec-init><real-type-name><type-real/></real-type-name><expression><real-literal>6.3</real-literal></expression></simple-spec-init></var-init-decl><var-init-decl><variable-name>PU2_LowLevel</variable-name><simple-spec-init><real-type-name><type-real/></real-type-name><expression><real-literal>1.0</real-literal></expression></simple-spec-init></var-init-decl><var-init-decl><variable-name>PU2_HighLevel</variable-name><simple-spec-init><real-type-name><type-real/></real-type-name><expression><real-literal>4.5</real-literal></expression></simple-spec-init></var-init-decl><var-init-decl><variable-name>FirstScan</variable-name><simple-spec-init><bit-string-type-name><type-bool/></bit-string-type-name><expression><boolean-literal>TRUE</boolean-literal></expression></simple-spec-init></var-init-decl><var-init-decl><variable-name>Htol</variable-name><simple-spec-init><real-type-name><type-real/></real-type-name><expression><real-literal>0.0005</real-literal></expression></simple-spec-init></var-init-decl><var-init-decl><variable-name>PU1_Command</variable-name><simple-spec-init><bit-string-type-name><type-bool/></bit-string-type-name></simple-spec-init></var-init-decl><var-init-decl><variable-name>PU2_Command</variable-name><simple-spec-init><bit-string-type-name><type-bool/></bit-string-type-name></simple-spec-init></var-init-decl></var-declarations><function-block-body><statement-list><if-statement><expression><variable-name>FirstScan</variable-name></expression><statement-list><assignment-statement><variable-name>FirstScan</variable-name><expression><boolean-literal>FALSE</boolean-literal></expression></assignment-statement><assignment-statement><variable-name>PU1_Command</variable-name><expression><boolean-literal>FALSE</boolean-literal></expression></assignment-statement><assignment-statement><variable-name>PU2_Command</variable-name><expression><boolean-literal>FALSE</boolean-literal></expression></assignment-statement><assignment-statement><variable-name>iPU1_State</variable-name><expression><integer-literal>10</integer-literal></expression></assignment-statement></statement-list></if-statement><case-statement><expression><variable-name>iPU1_State</variable-name></expression><case-element><case-list><case-list-element><integer-literal>10</integer-literal></case-list-element></case-list><statement-list><assignment-statement><variable-name>PU1_Command</variable-name><expression><boolean-literal>FALSE</boolean-literal></expression></assignment-statement><if-statement><expression><variable-name>L_T1</variable-name><less-or-equal/><expression><variable-name>PU1_LowLevel</variable-name><adding/><variable-name>Htol</variable-name></expression></expression><statement-list><assignment-statement><variable-name>iPU1_State</variable-name><expression><integer-literal>20</integer-literal></expression></assignment-statement></statement-list></if-statement></statement-list></case-element><case-element><case-list><case-list-element><integer-literal>20</integer-literal></case-list-element></case-list><statement-list><assignment-statement><variable-name>PU1_Command</variable-name><expression><boolean-literal>TRUE</boolean-literal></expression></assignment-statement><if-statement><expression><variable-name>L_T1</variable-name><greater-or-equal/><expression><variable-name>PU1_HighLevel</variable-name><adding/><variable-name>Htol</variable-name></expression></expression><statement-list><assignment-statement><variable-name>iPU1_State</variable-name><expression><integer-literal>10</integer-literal></expression></assignment-statement></statement-list></if-statement></statement-list></case-element><statement-list><assignment-statement><variable-name>iPU1_State</variable-name><expression><integer-literal>10</integer-literal></expression></assignment-statement><assignment-statement><variable-name>PU1_Command</variable-name><expression><boolean-literal>FALSE</boolean-literal></expression></assignment-statement></statement-list></case-statement><if-statement><expression><variable-name>L_T1</variable-name><less-or-equal/><expression><variable-name>PU2_LowLevel</variable-name><adding/><variable-name>Htol</variable-name></expression></expression><statement-list><assignment-statement><variable-name>PU2_Command</variable-name><expression><boolean-literal>TRUE</boolean-literal></expression></assignment-statement></statement-list><expression><variable-name>L_T1</variable-name><greater-or-equal/><expression><variable-name>PU2_HighLevel</variable-name><adding/><variable-name>Htol</variable-name></expression></expression><statement-list><assignment-statement><variable-name>PU2_Command</variable-name><expression><boolean-literal>FALSE</boolean-literal></expression></assignment-statement></statement-list></if-statement><assignment-statement><variable-name>S_PU1</variable-name><expression><variable-name>PU1_Command</variable-name></expression></assignment-statement><assignment-statement><variable-name>S_PU2</variable-name><expression><variable-name>PU2_Command</variable-name></expression></assignment-statement></statement-list></function-block-body></program-declaration><configuration-declaration><configuration-name>Config0</configuration-name><resource-declaration><resource-name>Res0</resource-name><resource-type-name>PLC</resource-type-name><single-resource-declaration><task-configuration><task-name>task0</task-name><task-initialization><data-source><time-literal><duration><milliseconds><integer>20</integer></milliseconds></duration></time-literal></data-source><integer>0</integer></task-initialization></task-configuration><program-configuration><program-name>instance0</program-name><task-name>task0</task-name><program-type-name>program0</program-type-name></program-configuration></single-resource-declaration></resource-declaration></configuration-declaration></iec-source>  </program>
+  <pdg-analysis>
+    <state id="10">
+      <variables>
+        <variable name="FirstScan" type="internal" data-type="BOOL" scope="var"/>
+        <variable name="Htol" type="configuration" data-type="REAL" scope="var"/>
+        <variable name="L_T1" type="sensing" data-type="REAL" scope="input"/>
+        <variable name="PU1_Command" type="actuation" data-type="BOOL" scope="var"/>
+        <variable name="PU1_HighLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="PU1_LowLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="PU2_Command" type="actuation" data-type="BOOL" scope="var"/>
+        <variable name="PU2_HighLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="PU2_LowLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="S_PU1" type="actuation" data-type="BOOL" scope="output"/>
+        <variable name="S_PU2" type="actuation" data-type="BOOL" scope="output"/>
+        <variable name="iPU1_State" type="sensing" data-type="INT" scope="input"/>
+      </variables>
+      <nodes>
+        <node id="0" type="assignment">
+          <statement>PU1_Command := FALSE</statement>
+          <reads>
+            <variable>PU1_Command</variable>
+          </reads>
+          <writes>
+            <variable>PU1_Command</variable>
+          </writes>
+        </node>
+        <node id="1" type="condition">
+          <statement>IF L_T1 &lt;= PU1_LowLevel + Htol</statement>
+          <reads>
+            <variable>Htol</variable>
+            <variable>L_T1</variable>
+            <variable>PU1_LowLevel</variable>
+          </reads>
+        </node>
+        <node id="2" type="assignment">
+          <statement>iPU1_State := 20</statement>
+          <reads>
+            <variable>iPU1_State</variable>
+          </reads>
+          <writes>
+            <variable>iPU1_State</variable>
+          </writes>
+        </node>
+      </nodes>
+      <edges>
+        <edge from="1" to="2" type="control" label="then"/>
+      </edges>
+    </state>
+    <state id="20">
+      <variables>
+        <variable name="FirstScan" type="internal" data-type="BOOL" scope="var"/>
+        <variable name="Htol" type="configuration" data-type="REAL" scope="var"/>
+        <variable name="L_T1" type="sensing" data-type="REAL" scope="input"/>
+        <variable name="PU1_Command" type="actuation" data-type="BOOL" scope="var"/>
+        <variable name="PU1_HighLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="PU1_LowLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="PU2_Command" type="actuation" data-type="BOOL" scope="var"/>
+        <variable name="PU2_HighLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="PU2_LowLevel" type="sensing" data-type="REAL" scope="var"/>
+        <variable name="S_PU1" type="actuation" data-type="BOOL" scope="output"/>
+        <variable name="S_PU2" type="actuation" data-type="BOOL" scope="output"/>
+        <variable name="iPU1_State" type="sensing" data-type="INT" scope="input"/>
+      </variables>
+      <nodes>
+        <node id="0" type="assignment">
+          <statement>PU1_Command := TRUE</statement>
+          <reads>
+            <variable>PU1_Command</variable>
+          </reads>
+          <writes>
+            <variable>PU1_Command</variable>
+          </writes>
+        </node>
+        <node id="1" type="condition">
+          <statement>IF L_T1 &gt;= PU1_HighLevel + Htol</statement>
+          <reads>
+            <variable>Htol</variable>
+            <variable>L_T1</variable>
+            <variable>PU1_HighLevel</variable>
+          </reads>
+        </node>
+        <node id="2" type="assignment">
+          <statement>iPU1_State := 10</statement>
+          <reads>
+            <variable>iPU1_State</variable>
+          </reads>
+          <writes>
+            <variable>iPU1_State</variable>
+          </writes>
+        </node>
+      </nodes>
+      <edges>
+        <edge from="1" to="2" type="control" label="then"/>
+      </edges>
+    </state>
+  </pdg-analysis>
+  <invariant-templates>
+    <state id="10">
+      <invariant id="state_10_PU1_Command" type="single">
+        <variables>
+          <variable>PU1_Command</variable>
+        </variables>
+        <structure>In State 10, PU1_Command = FALSE</structure>
+        <sensing-var>STATE</sensing-var>
+        <sensing-var-type>internal</sensing-var-type>
+        <actuation-var>PU1_Command</actuation-var>
+        <operator>=</operator>
+        <actuation-value>FALSE</actuation-value>
+        <confidence>1.0</confidence>
+      </invariant>
+      <invariant id="inter_10_to_20" type="inter">
+        <variables>
+          <variable>iPU1_State</variable>
+          <variable>L_T1</variable>
+          <variable>PU1_LowLevel</variable>
+          <variable>Htol</variable>
+        </variables>
+        <structure>IF (L_T1 &lt;= PU1_LowLevel + Htol) THEN iPU1_State := 20</structure>
+        <source-state>10</source-state>
+        <dest-state>20</dest-state>
+        <state-variable>iPU1_State</state-variable>
+        <transition-condition>(L_T1 &lt;= PU1_LowLevel + Htol)</transition-condition>
+        <condition-variables>
+          <variable>L_T1</variable>
+          <variable>PU1_LowLevel</variable>
+          <variable>Htol</variable>
+        </condition-variables>
+        <confidence>1.0</confidence>
+      </invariant>
+    </state>
+    <state id="20">
+      <invariant id="state_20_PU1_Command" type="single">
+        <variables>
+          <variable>PU1_Command</variable>
+        </variables>
+        <structure>In State 20, PU1_Command = TRUE</structure>
+        <sensing-var>STATE</sensing-var>
+        <sensing-var-type>internal</sensing-var-type>
+        <actuation-var>PU1_Command</actuation-var>
+        <operator>=</operator>
+        <actuation-value>TRUE</actuation-value>
+        <confidence>1.0</confidence>
+      </invariant>
+      <invariant id="inter_20_to_10" type="inter">
+        <variables>
+          <variable>iPU1_State</variable>
+          <variable>L_T1</variable>
+          <variable>PU1_HighLevel</variable>
+          <variable>Htol</variable>
+        </variables>
+        <structure>IF (L_T1 &gt;= PU1_HighLevel + Htol) THEN iPU1_State := 10</structure>
+        <source-state>20</source-state>
+        <dest-state>10</dest-state>
+        <state-variable>iPU1_State</state-variable>
+        <transition-condition>(L_T1 &gt;= PU1_HighLevel + Htol)</transition-condition>
+        <condition-variables>
+          <variable>L_T1</variable>
+          <variable>PU1_HighLevel</variable>
+          <variable>Htol</variable>
+        </condition-variables>
+        <confidence>1.0</confidence>
+      </invariant>
+    </state>
+  </invariant-templates>
+</iec-source>

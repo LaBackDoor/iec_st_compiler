@@ -131,6 +131,27 @@ def run_cli(args_list: Optional[List[str]] = None) -> int:
         help="Input source files (reads from stdin if none are provided).",
     )
 
+    parser.add_argument(
+        "--analyze",
+        action="store_true",
+        default=False,
+        help="Include PDG and invariant template analysis in output.",
+    )
+
+    parser.add_argument(
+        "--pdg-only",
+        action="store_true",
+        default=False,
+        help="Include only PDG analysis (no invariants).",
+    )
+
+    parser.add_argument(
+        "--graphviz",
+        dest="graphviz_output",
+        metavar="FILE",
+        help="Export PDGs to Graphviz DOT format.",
+    )
+
     args = parser.parse_args(args_list)
     start_time = time.time()
     files_iterator = None
@@ -159,13 +180,22 @@ def run_cli(args_list: Optional[List[str]] = None) -> int:
             # Output raw AST
             sys.stdout.write(str(output) + "\n")
         else:
-            # Returns XML string
-            pretty = getattr(args, "pretty", False)
-            xml_output = core.compile_to_xml(
-                source_content=source_content,
-                comment_pattern=comment_pattern,
-                pretty_print=pretty,
-            )
+            # Determine if we need analysis
+            if args.analyze or args.pdg_only:
+                xml_output = core.compile_to_xml_with_analysis(
+                    source_content=source_content,
+                    comment_pattern=comment_pattern,
+                    pretty_print=args.pretty,
+                    include_pdg=True,
+                    include_invariants=args.analyze and not args.pdg_only,
+                )
+            else:
+                # Standard compilation without analysis
+                xml_output = core.compile_to_xml(
+                    source_content=source_content,
+                    comment_pattern=comment_pattern,
+                    pretty_print=args.pretty,
+                )
 
             # Write to file or stdout
             if args.output_file and args.output_file != "-":
@@ -173,6 +203,21 @@ def run_cli(args_list: Optional[List[str]] = None) -> int:
                     outfile.write(xml_output)
             else:
                 sys.stdout.write(xml_output)
+
+            # Export Graphviz if requested
+            if args.graphviz_output:
+                from . import pdg as pdg_module
+                from .ast_writer import export_pdgs_to_graphviz
+
+                pdgs = pdg_module.build_all_pdgs(
+                    core.compile_to_ast(source_content, comment_pattern)
+                )
+                dot_output = export_pdgs_to_graphviz(pdgs)
+
+                with open(args.graphviz_output, "w", encoding="utf-8") as dotfile:
+                    dotfile.write(dot_output)
+
+                sys.stderr.write(f"PDG visualization exported to {args.graphviz_output}\n")
 
     except KeyboardInterrupt:
         sys.stderr.write("\nProcess interrupted by user.\n")

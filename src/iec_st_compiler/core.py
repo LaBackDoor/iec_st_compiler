@@ -10,7 +10,10 @@ from typing import List, Union, Any
 from lxml import etree
 from . import grammar
 from .parser import parse
-from .ast_writer import convert_ast_to_xml
+from . import pdg as pdg_module
+from . import invariants as inv_module
+from .ast_writer import convert_ast_to_xml_with_invariants_and_summary, convert_ast_to_xml
+import traceback
 
 # Type aliases for clarity
 CommentPattern = Union[re.Pattern, List]
@@ -115,3 +118,62 @@ def compile_to_ast(source_content: str, comment_pattern: CommentPattern) -> List
     )
 
     return ast
+
+
+def compile_to_xml_with_analysis(
+        source_content: str,
+        comment_pattern: CommentPattern,
+        pretty_print: bool = False,
+        include_pdg: bool = True,
+        include_invariants: bool = True,
+) -> str:
+    """Parse ST source and convert to XML with PDG and invariant analysis"""
+
+
+
+    # 1. Parse the source
+    source_lines_iterable = StringLineSource(source_content)
+    grammar_rule = grammar.iec_source_root
+    ast = parse(
+        grammar_rule, source_lines_iterable,
+        skip_ws=True, skip_comments=comment_pattern
+    )
+
+    # 2. Build PDGs if requested
+    pdgs = None
+    state_variable = None
+    if include_pdg:
+        try:
+            pdgs, state_variable = pdg_module.build_all_pdgs(ast)
+        except Exception as e:
+            print(f"DEBUG: ERROR building PDGs: {e}")
+            traceback.print_exc()
+
+    # 3. Extract invariants if requested
+    invariants = None
+    if include_invariants and pdgs:
+        try:
+            invariants = inv_module.extract_invariants_from_all_pdgs(pdgs, state_variable)  # UPDATED
+        except Exception as e:
+            print(f"DEBUG: ERROR extracting invariants: {e}")
+            traceback.print_exc()
+
+    # 4. Convert to XML
+    xml_output = convert_ast_to_xml_with_invariants_and_summary(
+        ast, pdgs, invariants, include_summary=True
+    )
+
+    # 5. Pretty print if requested
+    if pretty_print:
+        try:
+            xml_output = etree.tostring(
+                etree.fromstring(xml_output.encode("utf-8")),
+                pretty_print=True,
+                encoding="utf-8",
+            ).decode("utf-8")
+        except etree.XMLSyntaxError as e:
+            raise RuntimeError(
+                f"XML post-processing failed: {e}"
+            ) from e
+
+    return xml_output
