@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.13"
 
 [[package]]
@@ -49,7 +49,7 @@ wheels = [
 ]
 
 [[package]]
-name = "iec-st-compiler"
+name = "iec-st-analyzer"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

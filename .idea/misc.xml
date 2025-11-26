@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="uv (iec_st_compiler)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="uv (iec_st_compiler)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="uv (iec-st-analyzer)" project-jdk-type="Python SDK" />
 </project>
